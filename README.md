@@ -37,7 +37,7 @@ For quick styling, I used Daisy UI with Tailwind to speed up layout and button s
 
 ### Limitations / known issues
 
-The Geolocation feature is currently incomplete — longitude and latitude are not being passed correctly to the API, resulting in 400/500 errors.
+The Geolocation feature is currently incomplete — longitude and latitude are not being passed correctly to the API, resulting in 400/500 errors. There also might not be a lot of error testing which is what the application currently lacks.
 
 ## Future Improvements
 
@@ -56,3 +56,7 @@ I would've added Dark Mode as well since the application has a lot of white with
 4. Add Simple chart for Temperatures
 
 This is a feature that i have implemented before for a different application but there is a chart library that i would've add to this project which is 'react-chartjs-2' to display the difference of temperatures and make the application more interactive and better.
+
+5. Unit testing & end to end testing
+
+Since this application makes use of connecting to API's and has a lot of logic to test i would've added a Unit Testing framework such as Jest that would test and allow the code to be much better and help be clean as well and Playwright would've also been great to add to test the accessibility of the website and how responsive it would be in mobile device's.
