@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { parse } from "postcode";
 
 interface WeatherSearchFormProps {
-    onSearch: (userInput: string) => void;
+    onSearch: (userInput: string, type: 'zip' | 'city') => void;
 }
 
 export default function WeatherSearchForm({ onSearch }: WeatherSearchFormProps) {
@@ -17,15 +18,48 @@ export default function WeatherSearchForm({ onSearch }: WeatherSearchFormProps) 
         }
     }, []);
 
+    const processInput = (input: string): { processedInput: string, inputType: 'zip' | 'city'} => {
+        const trimmed = input.trim().toUpperCase();
+
+        const parsed = parse(trimmed);
+
+        if(parsed.valid) {
+            if(parsed.outcode) {
+                return {
+                    processedInput: parsed.outcode,
+                    inputType: 'zip'
+                };
+            }
+        }
+
+        return {
+            processedInput: trimmed,
+            inputType: 'city'
+        };
+    };
+
+    //this handles the recent searches the user inputted
+    const handleRecentSearchClick = (search: string) => {
+        const { processedInput, inputType } = processInput(search);
+
+        onSearch(processedInput, inputType);
+
+        setUserInput("");
+    }
+
     // handles searching with user input and saving to localStorage
     const handleSearch = (e?: React.FormEvent) => {
-        if(e) e.preventDefault();
+        if(e) 
+            e.preventDefault(); // Prevent from reload
 
         const trimmedInput = userInput.trim();
 
         if(!trimmedInput) return;
 
-        onSearch(trimmedInput);
+        // to detect if its a postcode or city
+        const { processedInput, inputType } = processInput(trimmedInput);
+
+        onSearch(processedInput, inputType);
 
         const updated = [
             trimmedInput, 
@@ -38,9 +72,9 @@ export default function WeatherSearchForm({ onSearch }: WeatherSearchFormProps) 
     };
 
     return (
-      <div>
+      <div className='relative h-full w-full p-10'>
           <h2>Search Weather</h2>
-          <form className='max-w-md mx-auto' onSubmit={(e) =>  {e.preventDefault(); handleSearch();}}>
+          <form className='max-w-md mx-auto' onSubmit={handleSearch}>
               <label className='mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white'>Search</label>
               <div className='relative'>
                   <input 
@@ -49,7 +83,7 @@ export default function WeatherSearchForm({ onSearch }: WeatherSearchFormProps) 
                     placeholder="Enter town/city or UK postcode (e.g SW1A 1AA)" 
                     onChange={(e) => setUserInput(e.target.value)}
                   />            
-                  <button type='submit' className='btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl' onClick={handleSearch}>Submit</button>
+                  <button type='submit' className='btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl btn-primary' onClick={handleSearch}>Submit</button>
               </div>
           </form>
 
@@ -57,7 +91,12 @@ export default function WeatherSearchForm({ onSearch }: WeatherSearchFormProps) 
             <ul>
                 {recentSearches.map((search, id) => (
                     <li key={id}>
-                        <button onClick={() => onSearch(search)}>{search}</button>
+                        <button 
+                            onClick={() => handleRecentSearchClick(search)}
+                            className='text-blue-500 hover:underline'
+                        >
+                                {search}
+                        </button>
                     </li>
                 ))}
             </ul>

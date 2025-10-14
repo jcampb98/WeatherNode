@@ -6,9 +6,8 @@ import WeatherSearchForm from "./components/WeatherSearchForm";
 export default function Home() {
   const [weather, setWeather] = useState<any>(null);
 
-  const fetchWeather = async (userInput: string) => {
-    const res = await fetch(`/api/weather?city=${userInput}`);
-    console.log("Fetching", `/api/weather?city=${userInput}`);
+  const fetchWeather = async (userInput: string, type: 'zip' | 'city') => {
+    const res = await fetch(`/api/weather?${type}=${userInput}`);
 
     if(!res.ok) {
       alert("Failed to fetch weather");

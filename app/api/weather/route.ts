@@ -2,19 +2,29 @@ import { NextResponse, NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
-    const searchInput = searchParams.get('city');
+    const cityInput = searchParams.get('city');
+    const zipInput = searchParams.get('zip');
 
-    if(!searchInput) {
-        return NextResponse.json({ error: 'City parameter is required'}, { status: 400});
+    if(!cityInput && !zipInput) {
+        return NextResponse.json({ error: 'City/Postcode parameter is required'}, { status: 400});
     }
 
     const apiKey = process.env.OPEN_WEATHER_MAP_API_KEY;
     const baseURL = 'https://api.openweathermap.org/data/2.5/';
 
+    let queryParam: string;
+
+    if(zipInput) {
+        queryParam = `zip=${encodeURIComponent(zipInput)},gb`; 
+    }
+    else {
+        queryParam = `q=${encodeURIComponent(cityInput!)},uk`;
+    }
+
     try {
         const [currentRes, forecastRes] = await Promise.all([
-            fetch(`${baseURL}/weather?q=${searchInput},uk&appid=${apiKey}&units=metric&mode=json`),
-            fetch(`${baseURL}/forecast?q=${searchInput},uk&appid=${apiKey}&units=metric&mode=json`)
+            fetch(`${baseURL}/weather?${queryParam}&appid=${apiKey}&units=metric&mode=json`),
+            fetch(`${baseURL}/forecast?${queryParam}&appid=${apiKey}&units=metric&mode=json`)
         ]);
 
         if(!currentRes.ok || !forecastRes.ok) {
