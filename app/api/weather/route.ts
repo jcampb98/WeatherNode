@@ -4,9 +4,11 @@ export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     const cityInput = searchParams.get('city');
     const zipInput = searchParams.get('zip');
+    const latInput = searchParams.get('lat');
+    const lonInput = searchParams.get('lot');
 
-    if(!cityInput && !zipInput) {
-        return NextResponse.json({ error: 'City/Postcode parameter is required'}, { status: 400});
+    if(!cityInput && !zipInput && (!latInput || !lonInput)) {
+        return NextResponse.json({ error: 'City/Postcode, or Latitude/Longitude parameter is required'}, { status: 400});
     }
 
     const apiKey = process.env.OPEN_WEATHER_MAP_API_KEY;
@@ -14,12 +16,19 @@ export const GET = async (req: NextRequest) => {
 
     let queryParam: string;
 
-    if(zipInput) {
+    if(latInput && lonInput) {
+        queryParam = `lat=${encodeURIComponent(latInput)}&lon=${encodeURIComponent(lonInput)}`;
+    }
+
+    else if(zipInput) {
         queryParam = `zip=${encodeURIComponent(zipInput)},gb`; 
     }
+
     else {
         queryParam = `q=${encodeURIComponent(cityInput!)},uk`;
     }
+
+    console.log(queryParam);
 
     try {
         const [currentRes, forecastRes] = await Promise.all([

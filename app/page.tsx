@@ -2,12 +2,22 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import WeatherSearchForm from "./components/WeatherSearchForm";
+import WeatherDisplay from "./components/WeatherDisplay";
 
 export default function Home() {
   const [weather, setWeather] = useState<any>(null);
 
-  const fetchWeather = async (userInput: string, type: 'zip' | 'city') => {
-    const res = await fetch(`/api/weather?${type}=${userInput}`);
+  const fetchWeather = async (value: string, type: 'zip' | 'city' | 'coords', lat?: number, lon?: number) => {
+    let queryString = '';
+
+    if(type === 'coords' && lat !== undefined && lon !== undefined) {
+      queryString = `lat=${lat}&lon=${lon}`
+    }
+    else {
+      queryString = `${type}=${encodeURIComponent(value)}`;
+    }
+    
+    const res = await fetch(`/api/weather?${queryString}`);
 
     if(!res.ok) {
       alert("Failed to fetch weather");
@@ -23,9 +33,15 @@ export default function Home() {
       <Header />
       <WeatherSearchForm onSearch={fetchWeather} />
 
-      {weather && (
-        <div>{JSON.stringify(weather, null, 2)}</div> // Placeholder for now until proper UI is defined
+      {weather && ( 
+        <WeatherDisplay weather={weather} />
       )}
+
+      {!weather && 
+        <p className="text-center text-gray-500 mt-12 text-lg">
+            Start searching for a city, postcode or using your current location
+        </p>
+      }
     </div>
   );
 }
