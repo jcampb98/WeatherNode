@@ -9,12 +9,12 @@ export const GET = async (req: NextRequest) => {
     }
 
     const apiKey = process.env.OPEN_WEATHER_MAP_API_KEY;
-    const baseURL = 'https://api.openweathermap.org/data/2.5/weather';
+    const baseURL = 'https://api.openweathermap.org/data/2.5/';
 
     try {
         const [currentRes, forecastRes] = await Promise.all([
-            fetch(`${baseURL}/weather?q=${searchInput},uk&appid=${apiKey}&units=metric`),
-            fetch(`${baseURL}/forecast?q=${searchInput},uk&appid=${apiKey}&units=metric`)
+            fetch(`${baseURL}/weather?q=${searchInput},uk&appid=${apiKey}&units=metric&mode=json`),
+            fetch(`${baseURL}/forecast?q=${searchInput},uk&appid=${apiKey}&units=metric&mode=json`)
         ]);
 
         if(!currentRes.ok || !forecastRes.ok) {
