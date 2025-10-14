@@ -32,31 +32,30 @@ I first built a proxy API route to securely handle OpenWeatherMap requests witho
 
 ### Using Existing Libraries for Efficiency
 
-To validate UK postcodes, I used postcode.js rather than writing complex regex, which helped keep the logic readable.
-For quick styling, I used Daisy UI with Tailwind to speed up layout and button styling.
+To validate UK postcodes, I used postcode.js rather than writing complex regex, which helped keep the logic readable. For quick styling, I used Daisy UI with Tailwind to speed up layout and button styling.
 
 ### Limitations / known issues
 
-The Geolocation feature is currently incomplete — longitude and latitude are not being passed correctly to the API, resulting in 400/500 errors. There also might not be a lot of error testing which is what the application currently lacks.
+Geolocation is partially implemented — latitude/longitude are not yet passed correctly to the API, resulting in 400/500 errors. Error handling and validation could be improved in edge cases.
 
 ## Future Improvements
 
-1. Finish the Geolocation Feature
+1. Finish the Geolocation Implementation
 
-if i was given a chance to finish the geolocation feature i would've investigated into why the latitude and longitude wasn't passing along to the API correctly or why my code wasn't correctly parsing it and throwing the error.
+I would debug why coordinates were not being passed correctly and ensure accurate parsing before sending to the weather API.
 
-2. Improve the User Interface
+2. Enhance UI & Accessibility
 
-i find the user interface to be pretty basic and bare since it has everything needed to work it but not what a website of this caliber should be and i would also add a lot of colour to it instead of it being just some purple, black & white and i would also add icons as well with colour to make it user friendly. i didn't have enough time to make the application to be web accessible either so i would accommodate that as well so that screen readers could access it and get the necessary information.
+I would improve the visual design with colour, icons, and spacing, while also making the interface screen-reader friendly.
 
 3. Add Dark Mode
 
-I would've added Dark Mode as well since the application has a lot of white within it thats what i think would generally improve this application as there is React libraries that can make adding this feature easier such as '@react-hooks-hub/use-dark-mode'.
+Libraries like @react-hooks-hub/use-dark-mode could provide quick theme toggling.
 
-4. Add Simple chart for Temperatures
+4. Display Forecast with a Temperature Chart
 
-This is a feature that i have implemented before for a different application but there is a chart library that i would've add to this project which is 'react-chartjs-2' to display the difference of temperatures and make the application more interactive and better.
+I’ve previously used something similar to react-chartjs-2 and would integrate it to make the forecast more visually engaging.
 
-5. Unit testing & end to end testing
+5. Add Testing (Unit + E2E)
 
-Since this application makes use of connecting to API's and has a lot of logic to test i would've added a Unit Testing framework such as Jest that would test and allow the code to be much better and help be clean as well and Playwright would've also been great to add to test the accessibility of the website and how responsive it would be in mobile device's.
+I would use Jest for logic testing and Playwright for accessibility and responsive layout testing.
