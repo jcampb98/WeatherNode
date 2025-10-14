@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WeatherNode
 
-## Getting Started
+This is an application that was built as a take home test for SecuriGroup and the key features that were successfully built for this weather application were: Search (enter a town/city or a UK postcode), Current Weather that shows temperature, humidity, wind speed, a description of the weather, 5-day forecast that shows the temperature, Recents that keeps a list of previous searches.
 
-First, run the development server:
+## Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository: 
+    ```bash
+    git clone https://github.com/jcampb98/WeatherNode.git
+    cd <folder>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+    ```bash
+    npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Add any required enviroment variables in order to make it running correctly:
+    ```ini
+    e.g. OPEN_WEATHER_MAP_API_KEY=<your-api-key>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Run
 
-## Learn More
+To start the project:
+    ```bash
+    npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+## Decisions & Trade-offs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prioritizing Core Functionality Over UI
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+As this was my first time working with Next.js, I focused on implementing core functionality before styling.
+I first built a proxy API route to securely handle OpenWeatherMap requests without exposing the API key. After that, I created a basic UI with a header and search form to test and iterate on functionality.
 
-## Deploy on Vercel
+### Using Existing Libraries for Efficiency
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To validate UK postcodes, I used postcode.js rather than writing complex regex, which helped keep the logic readable.
+For quick styling, I used Daisy UI with Tailwind to speed up layout and button styling.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Limitations / known issues
+
+The Geolocation feature is currently incomplete — longitude and latitude are not being passed correctly to the API, resulting in 400/500 errors.
+
+## Future Improvements
+
+1. Finish the Geolocation Feature
+
+if i was given a chance to finish the geolocation feature i would've investigated into why the latitude and longitude wasn't passing along to the API correctly or why my code wasn't correctly parsing it and throwing the error.
+
+2. Improve the User Interface
+
+i find the user interface to be pretty basic and bare since it has everything needed to work it but not what a website of this caliber should be and i would also add a lot of colour to it instead of it being just some purple, black & white and i would also add icons as well with colour to make it user friendly. i didn't have enough time to make the application to be web accessible either so i would accommodate that as well so that screen readers could access it and get the necessary information.
+
+3. Add Dark Mode
+
+I would've added Dark Mode as well since the application has a lot of white within it thats what i think would generally improve this application as there is React libraries that can make adding this feature easier such as '@react-hooks-hub/use-dark-mode'.
+
+4. Add Simple chart for Temperatures
+
+This is a feature that i have implemented before for a different application but there is a chart library that i would've add to this project which is 'react-chartjs-2' to display the difference of temperatures and make the application more interactive and better.
